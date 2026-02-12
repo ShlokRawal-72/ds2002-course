@@ -23,6 +23,14 @@ A few places you can find explanations and examples for various commands:
    
 ## Getting Oriented to your Home Directory
 
+Check where you are by executing the `pwd` command
+
+```bash
+pwd
+```
+
+If you started a new shell, you're likely in your home directory. If you started the terminal in Codespace, you should be in `/workspaces/ds2002-course` or similar.
+
 Change directories to your home directory by issuing the `cd ~` command. `cd` is short for "change directory". This is a shortcut to your home directory.
 
 ```bash
@@ -41,7 +49,7 @@ Learn the location of your home directory by issuing the `pwd` command. `pwd` is
 pwd
 ```
 
-List all the contents in your home directory by using the `ls` command.
+List all the contents in your home directory by using the `ls` command. If you're in Codespace, your home directory may appear empty.
 
 ```bash
 ls
@@ -94,18 +102,24 @@ You can even create numerous files based on a specific interval. This command cr
 for i in {02..20..2}; do touch file$i; done
 ```
 
-Add text contents to a file. You can use `echo` to pass some data into a file like this:
-
-```bash
-echo "Hi there everybody, my name is <YOUR NAME>" > file1
-```
-
-This command uses a "redirect" to take the `echo` command and push it into `file1`. You could actually just `echo` out anything you want, at any time, but it only prints to the screen and isn't recorded anywhere. Try it for yourself:
+The `echo` command prints text to the terminal output.
 
 ```bash
 echo "Today is Friday"
 echo "A man a plan a canal Panama"
 ```
+
+You can use it to add text contents to a file also:
+
+```bash
+echo "Hi there everybody, my name is <YOUR NAME>" > file1
+```
+
+```bash
+echo "I'm in the cloud." > README-cloudshell.txt
+```
+
+This command uses a "redirect" with `>` to take the `echo` command and push it into `file1`. 
 
 View the contents of your file using `cat`. `cat` is short for concatenate, since it can easily join files together, but it's often used simply for reading out the contents of a single file.
 
@@ -169,9 +183,12 @@ cd
 - The second works from anywhere because it is referencing the full path beginning with a `/`.
 - The third and fourth option also work from anywhere by looking up the value of the environment variable $HOME [see Environment Variables](#environment-env-variables). They offer the convenience of less typing and not having to remember your actual home directory and user name.
 
-To go back to the last directory you were in run this command:
+To go back to the last directory you can run `cd -`. Try this:
 ```bash
+cd ..
+pwd
 cd -
+pwd
 ```
 
 ## Working with Folders (Directories)
@@ -229,10 +246,10 @@ You can delete multiple objects with a filter in your command. For instance, run
 touch z{81..90}.txt
 ```
 
-You could delete ALL text files in the directory with:
+You could delete all files that begin with `z` with this:
 
 ```bash
-rm *.txt
+rm z*
 ```
 
 You could delete all `.txt` files that contain the number `8` in them with this:
@@ -241,20 +258,21 @@ You could delete all `.txt` files that contain the number `8` in them with this:
 rm *8*.txt
 ```
 
-You could delete all files that begin with `z` with this:
+You could delete ALL text files in the directory with:
 
 ```bash
-rm z*
+rm *.txt
 ```
 
 Create a deeper nested directory structures in one swoop. Try this:
-1. 
-    ```bash
-    mkdir -p timestamps/2026-01-01
-    ```
-2. Then `ls` and `cd` into `timestamps/2026-01-01`. 
-3. Confirm your location with `pwd`.
-4. Change back to where you came from with `cd -`. Alternatively, you could have run `cd ../..`. 
+ 
+```bash
+mkdir -p timestamps/2026-01-01
+```
+
+Then `ls` and `cd` into `timestamps/2026-01-01`. 
+Confirm your location with `pwd`.
+Change back to where you came from with `cd -`. Alternatively, you could have run `cd ../..`. 
 
 ## Working with Text Files
 
@@ -295,11 +313,37 @@ So if I just created `hello.txt` in `nano` earlier, I could rename it by moving 
 ```bash
 mv hello.txt hello
 ```
-You can always move a file to a completely different location by using a full path reference.
+You can always move a file to a completely different location by using a full path reference. That path may be absolute (with leading `/`) or relative (no leading `/`, relative to current location).
 
 ```bash
-mv hello.txt /another/directory/hello.txt
+mv file1 timestamps/2026-01-01
+ls 
 ```
+
+Now check `timestamps/2026-01-01`:
+```bash
+ls timestamps/2026-01-01
+```
+Do you see file1?
+
+**Understanding `mv` behavior:**
+
+The `mv` command behaves differently depending on what the destination is:
+
+1. **If the destination is an existing directory:** The file is moved into that directory, keeping its original name. If a file with the same name already exists in that directory, it will be overwritten.
+   ```bash
+   mv file.txt existing_dir/    # file.txt is moved into existing_dir/
+   ```
+
+2. **If the destination is a path to a non-existing file in an existing directory:** The file is moved and renamed to the new name.
+   ```bash
+   mv file.txt existing_dir/newfile.txt    # file.txt is moved to existing_dir/ and renamed to newfile.txt
+   ```
+
+3. **If the destination is a path to an existing file:** The source file overwrites the destination file (the original destination file is replaced).
+   ```bash
+   mv file.txt existing_file.txt    # file.txt replaces existing_file.txt (existing_file.txt is lost)
+   ```
 
 ## Pipe one command into another using the `|` character.
 
@@ -373,8 +417,10 @@ How many lines contain "Captain" in this text?
 What if we wanted to search across many files for a word? `grep` is still useful here. Issue this command from within your home directory:
 
 ```bash
-grep -r "Captain"
+grep -r "Captain" ./*
 ```
+
+The `./` at the end of the command specifies what files to search, in this case all files in the current directory.
 
 The output will contain both the file name where the search term appears and the relevant line itself
 
@@ -526,7 +572,7 @@ $ which python3
 /usr/bin/python3
 ```
 
-The binary code for Python3 lives within `/usr/bin` - a very normal place for it to be.
+The binary code for Python3 lives within `/usr/bin` - a very normal place for it to be. If you're in Codespace you may see a different location. In such case, replace `/usr/bin` in the next command with the output you've received.
 
 You may want to list the contents of the `/usr/bin` directory to get a sense for all the 
 built-in commands within the Linux kernel and `bash` shell.
@@ -584,10 +630,12 @@ when using either the `zip` or `tar` commands.
 Displays your history of commands in `bash`. Often this is limited to 1000 but that can
 be changed in your `.bashrc` file.
 
-### `!999`
-
 When viewing your history, notice the line number with each command. To repeat an item
 in your history, prefix that number with `!`.
+
+```bash
+!35
+```
 
 ## Environment `env` variables
 
@@ -642,24 +690,6 @@ If you can become `root` or use the `sudo` command, there is also a system-wide 
 
 The Linux OS has several built-in tools for helping check networking, or interacting with remote resources on the Internet.
 
-### `ping`
-
-`ping` is a simple tool that, like its submarine counterpart, simply bounces a message off of a remote host and tells you if it is reachable:
-
-```bash
-$ ping google.com
-PING google.com (142.251.167.138): 56 data bytes
-64 bytes from 142.251.167.138: icmp_seq=0 ttl=57 time=6.479 ms
-64 bytes from 142.251.167.138: icmp_seq=1 ttl=57 time=4.430 ms
-64 bytes from 142.251.167.138: icmp_seq=2 ttl=57 time=4.407 ms
-64 bytes from 142.251.167.138: icmp_seq=3 ttl=57 time=4.518 ms
-```
-
-Press Ctrl+C to stop the `ping`s. Be aware that `ping` just verified two things for us:
-
-1. The host `google.com` is alive and well; and
-2. Our current host has an active Internet connection.
-
 ### `curl`
 
 `curl` is a basic tool for fetching something from the Internet - a file, web page, zip or tar bundle, CSV or JSON datafile, etc. You used `curl` above to fetch the Moby Dick text. Try it yourself with this list of songs:
@@ -682,6 +712,33 @@ Example output:
 ```bash
 199.111.240.7
 ```
+
+
+```bash
+curl -I https://google.com
+```
+
+The `-I` flag sends a HEAD request to retrieve only the HTTP headers from the server without downloading the page content.
+
+### `ping`
+
+`ping` is a simple tool that, like its submarine counterpart, simply bounces a message off of a remote host and tells you if it is reachable:
+
+```bash
+$ ping google.com
+PING google.com (142.251.167.138): 56 data bytes
+64 bytes from 142.251.167.138: icmp_seq=0 ttl=57 time=6.479 ms
+64 bytes from 142.251.167.138: icmp_seq=1 ttl=57 time=4.430 ms
+64 bytes from 142.251.167.138: icmp_seq=2 ttl=57 time=4.407 ms
+64 bytes from 142.251.167.138: icmp_seq=3 ttl=57 time=4.518 ms
+```
+
+Press Ctrl+C to stop the `ping`s. Be aware that `ping` just verified two things for us:
+
+1. The host `google.com` is alive and well; and
+2. Our current host has an active Internet connection.
+
+>Note: Codespace may restrict the ping command from reaching outside servers for security reasons. Use the `curl -I google.com` command instead.
 
 ### `ssh`
 
