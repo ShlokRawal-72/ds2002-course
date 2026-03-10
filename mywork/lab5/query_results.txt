@@ -1,0 +1,7 @@
+first_name	last_name	dept_name
+Grace	Hopper	Data Science
+Katherine	Johnson	Data Science
+Annie	Easley	Data Science
+John	Von Neumann	Finance
+Claude	Shannon	IT Support
+Dorothy	Vaughan	IT Support
