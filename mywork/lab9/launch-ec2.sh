@@ -1,4 +1,6 @@
 #!/bin/bash
+module load miniforge
+source activate ds2002
 
 
 AMI="ami-0ec10929233384c7f"             

@@ -1,4 +1,6 @@
 #!/bin/bash
+module load miniforge
+source activate ds2002
 
 aws ec2 describe-instances | jq '.Reservations[].Instances[] | {
   ImageId: .ImageId,
