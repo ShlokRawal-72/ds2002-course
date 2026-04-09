@@ -1,0 +1,14 @@
+first_name	last_name	dept_name
+Ada	Lovelace	Engineering
+Grace	Hopper	Data Science
+Katherine	Johnson	Data Science
+Margaret	Hamilton	Engineering
+Alan	Turing	Research
+John	Von Neumann	Finance
+Claude	Shannon	IT Support
+Hedy	Lamarr	Research
+Annie	Easley	Data Science
+Dorothy	Vaughan	IT Support
+Linus	Torvalds	Engineering
+Tim	Berners-Lee	Design
+Bjarne	Stroustrup	Engineering
